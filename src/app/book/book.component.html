@@ -1,1 +1,12 @@
-<p>book works!</p>
+<div class = "container">
+  <div class="book">
+    <img [src]="image" [alt]="title">
+    <h2>{{ title }}</h2>
+    <p class="author">{{ author }}</p>
+    <p class="publisher">{{ publisher }}, {{ publishing }}</p>
+    <p class="description">{{ description }}</p>
+    <p class="createdAt">Posté le {{ createdAt }}</p>
+    <p>🤟 {{ likes }}</p>
+  </div>
+</div>
+

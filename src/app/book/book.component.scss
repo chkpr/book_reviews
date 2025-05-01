@@ -1,0 +1,39 @@
+h2 {
+  font-family: "Bebas Neue", cursive;
+  font-size: 48px;
+  margin: 10px 0 5px 0;
+}
+
+.container {
+  margin: 10% 10%;
+}
+
+.book {
+  width: 33%;
+  img {
+    width: 50%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+}
+
+.author {
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.publisher, .publishing {
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  margin:5px 0 5px 0;
+}
+
+.description {
+  font-weight: 300;
+}
+
+.createdAt {
+  font-size: 14px;
+  font-weight: 300;
+}
