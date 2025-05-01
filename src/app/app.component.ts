@@ -1,16 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {BookComponent} from './book/book.component';
-import {Book} from './models/book';
-import {BookListComponent} from './book-list/book-list.component';
+import {Component} from '@angular/core';
 import {HeaderComponent} from './header/header.component';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   imports: [
-    BookComponent,
-    BookListComponent,
-    HeaderComponent
+    HeaderComponent,
+    RouterOutlet
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
