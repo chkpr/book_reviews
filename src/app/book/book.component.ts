@@ -1,9 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Book} from '../models/book';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-book',
-  imports: [],
+  imports: [
+    DatePipe
+  ],
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss'
 })

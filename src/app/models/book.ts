@@ -8,6 +8,7 @@ export class Book {
     public description: string,
     public createdAt: Date,
     public likes: number,
+    public review: string
   ){}
 
   addLike(): void {
