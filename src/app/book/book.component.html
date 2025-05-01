@@ -6,7 +6,7 @@
     <p class="publisher">{{ publisher }}, {{ publishing }}</p>
     <p class="description">{{ description }}</p>
     <p class="createdAt">Posté le {{ createdAt }}</p>
-    <p>🤟 {{ likes }}</p>
+    <p (click)="onLike()"><button>🤟</button> {{ likes }}</p>
   </div>
 </div>
 

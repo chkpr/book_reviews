@@ -15,6 +15,7 @@ export class BookComponent implements OnInit {
   description!: string;
   createdAt!: Date;
   likes!: number;
+  userHasLiked!: boolean;
 
   ngOnInit() {
     this.title = 'Silo';
@@ -25,5 +26,24 @@ export class BookComponent implements OnInit {
     this.description = '"Dans un futur indéterminé, des survivants vivent depuis plusieurs générations dans un immense silo creusé dans la terre, à l\'abri d\'une atmosphère devenue toxique."';
     this.createdAt = new Date();
     this.likes = 5;
+    this.userHasLiked = false;
+  }
+
+  onLike() {
+    if(this.userHasLiked){
+      this.unLike();
+    } else {
+      this.like();
+    }
+  }
+
+  unLike() {
+    this.likes--;
+    this.userHasLiked = false;
+  }
+
+  like(): void {
+    this.likes++;
+    this.userHasLiked = true;
   }
 }
