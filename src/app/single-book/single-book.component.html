@@ -4,13 +4,13 @@
     <h2>{{ book.title }}</h2>
     <p class="author">{{ book.author }}</p>
     <p class="publisher">{{ book.publisher }}, {{ book.publishing }}</p>
-    <p (click)="onLike()"><button class="button">❤</button> {{ book.likes }}</p>
+    <p (click)="onLike()"><button>❤</button> {{ book.likes }}</p>
   </div>
   <div class="review">
     <p class="description">{{ book.description }}</p>
     <p>{{ book.review }}</p>
     <p class="createdAt">Posté le {{ book.createdAt | date: 'd MMMM yyy, à HH:mm' }}</p>
-    <button (click)="onViewBook()" class="button-1" role="button">Lire la review</button>
+    <a routerLink="/books">Retour à la liste</a>
   </div>
 </div>
 

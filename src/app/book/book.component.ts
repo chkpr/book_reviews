@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Book} from '../models/book';
 import {DatePipe} from '@angular/common';
 import {BooksService} from '../services/books.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-book',
@@ -17,7 +18,8 @@ export class BookComponent implements OnInit {
   likes!: number;
   userHasLiked!: boolean;
 
-  constructor(private booksService: BooksService) {}
+  constructor(private booksService: BooksService,
+              private router: Router) {}
 
   ngOnInit() {
     this.likes = 5;
@@ -40,5 +42,9 @@ export class BookComponent implements OnInit {
   like(): void {
     this.booksService.likeBookById(this.book.id, 'like');
     this.userHasLiked = true;
+  }
+
+  onViewBook(){
+    this.router.navigateByUrl(`books/${this.book.id}`);
   }
 }

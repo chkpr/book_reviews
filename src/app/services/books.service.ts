@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import {Book} from '../models/book';
 import {LikeType} from '../models/like-type.type';
 
-
 @Injectable({
   providedIn: 'root'
   })
@@ -101,12 +100,20 @@ import {LikeType} from '../models/like-type.type';
       return [...this.books];
     }
 
+    getBooksById(bookId:string): Book {
+      const foundBook = this.books.find(book => book.id === bookId);
+      if (!foundBook) {
+        throw new Error('FaceSnap not found!');
+      }
+      return foundBook;
+    }
+
   likeBookById(bookId: string, likeType: LikeType): void {
-    const foundBook = this.books.find(book => book.id === bookId);
-    if (!foundBook) {
+    const book = this.getBooksById(bookId);
+    if (!book) {
       throw new Error('FaceSnap not found!');
     }
-    foundBook.like(likeType);
+    book.like(likeType);
   }
   }
 
