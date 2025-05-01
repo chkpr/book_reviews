@@ -1,4 +1,9 @@
+import {LikeType} from './like-type.type';
+
 export class Book {
+
+  id: string;
+
   constructor(
     public title: string,
     public author: string,
@@ -9,7 +14,9 @@ export class Book {
     public createdAt: Date,
     public likes: number,
     public review: string
-  ){}
+  ){
+    this.id = crypto.randomUUID().substring(0, 8);
+  }
 
   addLike(): void {
     this.likes++;
@@ -17,5 +24,13 @@ export class Book {
 
   removeLike(): void {
     this.likes--;
+  }
+
+  like(likeType: LikeType): void {
+    if (likeType === 'like') {
+      this.addLike()
+    } else if (likeType === 'unlike') {
+      this.removeLike();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Book} from '../models/book';
 import {DatePipe} from '@angular/common';
+import {BooksService} from '../services/books.service';
 
 @Component({
   selector: 'app-book',
@@ -16,6 +17,8 @@ export class BookComponent implements OnInit {
   likes!: number;
   userHasLiked!: boolean;
 
+  constructor(private booksService: BooksService) {}
+
   ngOnInit() {
     this.likes = 5;
     this.userHasLiked = false;
@@ -30,12 +33,12 @@ export class BookComponent implements OnInit {
   }
 
   unLike() {
-    this.book.removeLike();
+    this.booksService.likeBookById(this.book.id, 'unlike');
     this.userHasLiked = false;
   }
 
   like(): void {
-    this.book.addLike();
+    this.booksService.likeBookById(this.book.id, 'like');
     this.userHasLiked = true;
   }
 }
