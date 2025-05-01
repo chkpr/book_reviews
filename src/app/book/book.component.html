@@ -1,12 +1,12 @@
 <div class = "container">
   <div class="book">
-    <img [src]="image" [alt]="title">
-    <h2>{{ title }}</h2>
-    <p class="author">{{ author }}</p>
-    <p class="publisher">{{ publisher }}, {{ publishing }}</p>
-    <p class="description">{{ description }}</p>
-    <p class="createdAt">Posté le {{ createdAt }}</p>
-    <p (click)="onLike()"><button>🤟</button> {{ likes }}</p>
+    <img [src]="book.image" [alt]="book.title">
+    <h2>{{ book.title }}</h2>
+    <p class="author">{{ book.author }}</p>
+    <p class="publisher">{{ book.publisher }}, {{ book.publishing }}</p>
+    <p class="description">{{ book.description }}</p>
+    <p class="createdAt">Posté le {{ book.createdAt }}</p>
+    <p (click)="onLike()"><button>🤟</button> {{ book.likes }}</p>
   </div>
 </div>
 
