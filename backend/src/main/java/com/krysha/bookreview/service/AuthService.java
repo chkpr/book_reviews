@@ -23,6 +23,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
+    	if (userRepository.existsByEmail(request.getEmail())) {
+    		throw new RuntimeException("Cette adresse email est déjà utilisée");
+    	}
         var user = new User();
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
