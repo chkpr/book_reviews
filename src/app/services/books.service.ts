@@ -72,7 +72,7 @@ import {LikeType} from '../models/like-type.type';
         'vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"'
       ),
       new Book(
-        'Oublier Palerme',
+        'Vente à la criée du lot n°49',
         'Edmonde Charles-Roux',
         'Le livre de Poche',
         '1966',
@@ -103,7 +103,7 @@ import {LikeType} from '../models/like-type.type';
     getBooksById(bookId:string): Book {
       const foundBook = this.books.find(book => book.id === bookId);
       if (!foundBook) {
-        throw new Error('FaceSnap not found!');
+        throw new Error('Book not found!');
       }
       return foundBook;
     }
