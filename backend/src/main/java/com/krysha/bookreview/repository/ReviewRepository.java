@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.krysha.bookreview.model.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-	List<Review> findByBookById(Long bookId);
+	List<Review> findByBookId(Long bookId);
 	List<Review> findByUserId (Long userId);
 }
 

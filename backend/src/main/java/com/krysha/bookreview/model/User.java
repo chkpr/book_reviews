@@ -53,10 +53,6 @@ public class User implements UserDetails {
 	@Column(updatable=false)
 	private LocalDateTime createdAt;
 	
-	@Override
-	public String getPassword() {
-		return password;
-	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
