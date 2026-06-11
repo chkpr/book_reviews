@@ -47,4 +47,8 @@ public class CategoryService {
 			return categoryRepository.save(existing);
 		});
 	}
+	
+	public boolean existsById(final Long id) {
+	    return categoryRepository.existsById(id);
+	}
 }

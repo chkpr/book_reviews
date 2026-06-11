@@ -46,5 +46,9 @@ public class ReviewService {
 	    });
 	}
 	
+	public boolean existsById(final Long id) {
+	    return reviewRepository.existsById(id);
+	}
+	
 	
 }

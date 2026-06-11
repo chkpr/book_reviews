@@ -52,4 +52,8 @@ public class BookService {
 	        return bookRepository.save(existing);
 	    });
 	}
+	
+	public boolean existsById(final Long id) {
+	    return bookRepository.existsById(id);
+	}
 }

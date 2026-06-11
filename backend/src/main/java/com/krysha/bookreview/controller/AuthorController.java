@@ -40,11 +40,11 @@ public class AuthorController {
 	@PostMapping("/authors")
 	private ResponseEntity<Void> createAuthor(@RequestBody Author newAuthorRequest, UriComponentsBuilder ucb) {
 			Author savedAuthor = authorService.saveAuthor(newAuthorRequest);
-				URI localtionOfNewAuthor = ucb
+				URI locationOfNewAuthor = ucb
 						.path("authors/{id}")
 						.buildAndExpand(savedAuthor.getId())
 						.toUri();
-		return ResponseEntity.created(localtionOfNewAuthor).build();
+		return ResponseEntity.created(locationOfNewAuthor).build();
 	}
 	
 	@DeleteMapping("/{id}")
@@ -57,7 +57,7 @@ public class AuthorController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/authors/{id}")
 	private ResponseEntity<Void> putAuthor(@PathVariable Long id, @RequestBody Author authorUpdate) {
 	if(!authorService.existsById(id)) {
 		return ResponseEntity.notFound().build();
