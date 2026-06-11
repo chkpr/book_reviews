@@ -48,5 +48,8 @@ public class AuthorService {
 	    });
 	}
 	
+	public boolean existsById(final Long id) {
+	    return authorRepository.existsById(id);
+	}
 	
 }
