@@ -25,6 +25,7 @@ public class Book {
 	@Column(length=2000)
 	private String summary;
 	
+	@Column
 	private LocalDate publishedDate;
 	
 	@ManyToOne
@@ -37,7 +38,7 @@ public class Book {
 			joinColumns = @JoinColumn(name = "book_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id")
 		)
-		private List<Category> categories;
+	private List<Category> categories;
 	
 	@OneToMany(mappedBy = "book")
 	private List<Review> reviews;
