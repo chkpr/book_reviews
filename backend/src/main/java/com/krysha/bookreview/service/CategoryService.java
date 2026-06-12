@@ -1,5 +1,6 @@
 package com.krysha.bookreview.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class CategoryService {
 		return categoryRepository.findById(id);
 	}
 	
-	public Iterable<Category> getCategories() {
+	public List<Category> getCategories() {
 		return categoryRepository.findAll();
 	}
 	

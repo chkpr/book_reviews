@@ -2,7 +2,6 @@ package com.krysha.bookreview.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -26,7 +25,7 @@ public class Book {
 	private String summary;
 	
 	@Column
-	private LocalDate publishedDate;
+	private Integer publishedYear;
 	
 	@ManyToOne
 	@JoinColumn(name="author_id", nullable=false)

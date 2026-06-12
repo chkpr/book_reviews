@@ -1,5 +1,6 @@
 package com.krysha.bookreview.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class BookService {
 		return bookRepository.findById(id);
 	}
 	
-	public Iterable<Book> getBooks(){
+	public List<Book> getBooks(){
 		return bookRepository.findAll();
 	}
 	
@@ -45,7 +46,7 @@ public class BookService {
 			if(book.getTitle() != null) existing.setTitle(book.getTitle());
 			if(book.getIsbn() !=null) existing.setIsbn(book.getIsbn());
 			if(book.getSummary() !=null) existing.setSummary(book.getSummary());
-			if(book.getPublishedDate() !=null) existing.setPublishedDate(book.getPublishedDate());
+			if(book.getPublishedYear() !=null) existing.setPublishedYear(book.getPublishedYear());
 			if (book.getAuthor() != null) existing.setAuthor(book.getAuthor());
 	        if (book.getCategories() != null && !book.getCategories().isEmpty()) 
 	            existing.setCategories(book.getCategories());

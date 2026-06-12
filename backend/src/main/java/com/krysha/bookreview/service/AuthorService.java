@@ -1,5 +1,6 @@
 package com.krysha.bookreview.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class AuthorService {
 		return authorRepository.findById(id);
 	}
 	
-	public Iterable<Author> getAuthors() {
+	public List<Author> getAuthors() {
 		return authorRepository.findAll();
 	}
 	

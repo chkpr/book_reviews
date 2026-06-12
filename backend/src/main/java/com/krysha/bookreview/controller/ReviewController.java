@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.krysha.bookreview.dto.ReviewResponse;
 import com.krysha.bookreview.model.Review;
 import com.krysha.bookreview.service.ReviewService;
 
@@ -18,27 +19,29 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/reviews")
-    public Iterable<Review> getReviews() {
-        return reviewService.getReviews();
+    public Iterable<ReviewResponse> getReviews() {
+        return reviewService.getReviews().stream()
+        		.map(ReviewResponse::from)
+        		.toList();
     }
 
     @GetMapping("/reviews/{requestedId}")
-    private ResponseEntity<Review> findById(@PathVariable Long requestedId) {
+    private ResponseEntity<ReviewResponse> findById(@PathVariable Long requestedId) {
         Optional<Review> review = reviewService.getReview(requestedId);
         if (review.isPresent()) {
-            return ResponseEntity.ok(review.get());
+            return ResponseEntity.ok(ReviewResponse.from(review.get()));
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/reviews")
-    private ResponseEntity<Void> createReview(@RequestBody Review newReviewRequest, UriComponentsBuilder ucb) {
+    private ResponseEntity<ReviewResponse> createReview(@RequestBody Review newReviewRequest, UriComponentsBuilder ucb) {
         Review savedReview = reviewService.saveReview(newReviewRequest);
         URI locationOfNewReview = ucb
                 .path("reviews/{id}")
                 .buildAndExpand(savedReview.getId())
                 .toUri();
-        return ResponseEntity.created(locationOfNewReview).build();
+        return ResponseEntity.created(locationOfNewReview).body(ReviewResponse.from(savedReview));
     }
 
     @DeleteMapping("/reviews/{id}")
@@ -51,11 +54,11 @@ public class ReviewController {
     }
 
     @PutMapping("/reviews/{id}")
-    private ResponseEntity<Void> putReview(@PathVariable Long id, @RequestBody Review reviewUpdate) {
+    private ResponseEntity<ReviewResponse> putReview(@PathVariable Long id, @RequestBody Review reviewUpdate) {
         if (!reviewService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        reviewService.updateReview(id, reviewUpdate);
-        return ResponseEntity.noContent().build();
+        Review updated = reviewService.updateReview(id, reviewUpdate);
+        return ResponseEntity.ok(ReviewResponse.from(updated));
     }
 }

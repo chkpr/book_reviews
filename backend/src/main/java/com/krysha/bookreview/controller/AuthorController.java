@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.krysha.bookreview.dto.AuthorResponse;
 import com.krysha.bookreview.model.Author;
 import com.krysha.bookreview.service.AuthorService;
 
@@ -24,30 +25,32 @@ public class AuthorController {
 	private AuthorService authorService;
 	
 	@GetMapping("/authors")
-	public Iterable<Author> getAuthors() {
-		return authorService.getAuthors();
+	public Iterable<AuthorResponse> getAuthors() {
+		return authorService.getAuthors().stream()
+				.map(AuthorResponse::from)
+				.toList();
 	}
 	
 	@GetMapping("/authors/{requestedId}")
-	private ResponseEntity<Author> findById(@PathVariable Long requestedId) {
+	private ResponseEntity<AuthorResponse> findById(@PathVariable Long requestedId) {
 		Optional <Author> author = authorService.getAuthor(requestedId);
 		if(author.isPresent()) {
-			return ResponseEntity.ok(author.get());
+			return ResponseEntity.ok(AuthorResponse.from(author.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping("/authors")
-	private ResponseEntity<Void> createAuthor(@RequestBody Author newAuthorRequest, UriComponentsBuilder ucb) {
+	private ResponseEntity<AuthorResponse> createAuthor(@RequestBody Author newAuthorRequest, UriComponentsBuilder ucb) {
 			Author savedAuthor = authorService.saveAuthor(newAuthorRequest);
 				URI locationOfNewAuthor = ucb
 						.path("authors/{id}")
 						.buildAndExpand(savedAuthor.getId())
 						.toUri();
-		return ResponseEntity.created(locationOfNewAuthor).build();
+		return ResponseEntity.created(locationOfNewAuthor).body(AuthorResponse.from(savedAuthor));
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/authors/{id}")
 	private ResponseEntity<Void>deleteAuthor(@PathVariable Long id) {
 		if(!authorService.existsById(id)) {
 			return ResponseEntity.notFound().build();
@@ -58,11 +61,11 @@ public class AuthorController {
 	}
 
 	@PutMapping("/authors/{id}")
-	private ResponseEntity<Void> putAuthor(@PathVariable Long id, @RequestBody Author authorUpdate) {
+	private ResponseEntity<AuthorResponse> putAuthor(@PathVariable Long id, @RequestBody Author authorUpdate) {
 	if(!authorService.existsById(id)) {
 		return ResponseEntity.notFound().build();
 		}
-    authorService.updateAuthor(id, authorUpdate);
-    return ResponseEntity.noContent().build();
+    Author updated = authorService.updateAuthor(id, authorUpdate);
+    return ResponseEntity.ok(AuthorResponse.from(updated));
 	}
 }

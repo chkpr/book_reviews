@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.krysha.bookreview.dto.BookResponse;
 import com.krysha.bookreview.model.Book;
 import com.krysha.bookreview.service.BookService;
 
@@ -17,27 +19,29 @@ public class BookController {
 	private BookService bookService;
 	
 	@GetMapping("/books")
-	public Iterable<Book> getBooks() {
-		return bookService.getBooks();
+	public Iterable<BookResponse> getBooks() {
+		return bookService.getBooks().stream()
+				.map(BookResponse::from)
+				.toList();
 	}
 	
 	@GetMapping("/books/{requestedId}")
-	private ResponseEntity<Book> findById(@PathVariable Long requestedId) {
+	private ResponseEntity<BookResponse> findById(@PathVariable Long requestedId) {
 		Optional <Book> book = bookService.getBook(requestedId);
 		if(book.isPresent()) {
-			return ResponseEntity.ok(book.get());
+			return ResponseEntity.ok(BookResponse.from(book.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping("/books")
-	private ResponseEntity<Void> createBook(@RequestBody Book newBookRequest, UriComponentsBuilder ucb) {
+	private ResponseEntity<BookResponse> createBook(@RequestBody Book newBookRequest, UriComponentsBuilder ucb) {
 		Book savedBook = bookService.saveBook(newBookRequest);
 			URI locationOfNewBook = ucb
 					.path("books/{id}")
 					.buildAndExpand(savedBook.getId())
 					.toUri();
-			return ResponseEntity.created(locationOfNewBook).build();
+			return ResponseEntity.created(locationOfNewBook).body(BookResponse.from(savedBook));
 	}
 	
 	@DeleteMapping("/books/{id}")
@@ -50,12 +54,12 @@ public class BookController {
 	}
 	
 	@PutMapping("/books/{id}")
-	private ResponseEntity<Void> putBook(@PathVariable Long id, @RequestBody Book bookUpdate) {
+	private ResponseEntity<BookResponse> putBook(@PathVariable Long id, @RequestBody Book bookUpdate) {
 	if(!bookService.existsById(id)) {
 		return ResponseEntity.notFound().build();
 		}
-    bookService.updateBook(id, bookUpdate);
-    return ResponseEntity.noContent().build();
+    Book updated = bookService.updateBook(id, bookUpdate);
+    return ResponseEntity.ok(BookResponse.from(updated));
 	}
 	
 	

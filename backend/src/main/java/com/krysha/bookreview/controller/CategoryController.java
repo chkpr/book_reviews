@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.krysha.bookreview.dto.CategoryResponse;
 import com.krysha.bookreview.model.Category;
 import com.krysha.bookreview.service.CategoryService;
 
@@ -17,27 +19,29 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@GetMapping("/categories")
-	public Iterable<Category> getCategories() {
-		return categoryService.getCategories();
+	public Iterable<CategoryResponse> getCategories() {
+		return categoryService.getCategories().stream()
+				.map(CategoryResponse::from)
+				.toList();
 	}
 	
 	@GetMapping("/categories/{requestedId}")
-	private ResponseEntity<Category> findById(@PathVariable Long requestedId) {
+	private ResponseEntity<CategoryResponse> findById(@PathVariable Long requestedId) {
 		Optional<Category> category = categoryService.getCategory(requestedId);
 		if(category.isPresent()) {
-			return ResponseEntity.ok(category.get());
+			return ResponseEntity.ok(CategoryResponse.from(category.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping("/categories")
-	private ResponseEntity<Void> createCategory(@RequestBody Category newCategoryRequest, UriComponentsBuilder ucb) {
+	private ResponseEntity<CategoryResponse> createCategory(@RequestBody Category newCategoryRequest, UriComponentsBuilder ucb) {
 		Category savedCategory = categoryService.saveCategory(newCategoryRequest);
 			URI locationOfNewCategory = ucb
 					.path("categories/{id}")
 					.buildAndExpand(savedCategory.getId())
 					.toUri();
-			return ResponseEntity.created(locationOfNewCategory).build();
+			return ResponseEntity.created(locationOfNewCategory).body(CategoryResponse.from(savedCategory));
 	}
 	
 	@DeleteMapping("/categories/{id}")
@@ -50,11 +54,11 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/categories/{id}")
-	private ResponseEntity<Void> putCategory(@PathVariable Long id, @RequestBody Category categoryUpdate) {
+	private ResponseEntity<CategoryResponse> putCategory(@PathVariable Long id, @RequestBody Category categoryUpdate) {
 	if(!categoryService.existsById(id)) {
 		return ResponseEntity.notFound().build();
 		}
-    categoryService.updateCategory(id, categoryUpdate);
-    return ResponseEntity.noContent().build();
+    Category updated = categoryService.updateCategory(id, categoryUpdate);
+    return ResponseEntity.ok(CategoryResponse.from(updated));
 	}
 }
