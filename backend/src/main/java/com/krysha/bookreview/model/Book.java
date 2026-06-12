@@ -27,6 +27,9 @@ public class Book {
 	@Column
 	private Integer publishedYear;
 	
+	@Column
+	private String coverUrl;
+	
 	@ManyToOne
 	@JoinColumn(name="author_id", nullable=false)
 	private Author author;

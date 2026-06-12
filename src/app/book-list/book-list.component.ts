@@ -12,13 +12,20 @@ import {BooksService} from '../services/books.service';
   styleUrl: './book-list.component.scss'
 })
 export class BookListComponent implements OnInit {
-  books!: Book[];
+  books: Book[] = [];
 
   constructor(private booksService: BooksService) {
   }
 
     ngOnInit() {
-      this.books = this.booksService.getBooks();
+      this.booksService.getBooks().subscribe({
+        next: (books: Book[]) => {
+          this.books = books;
+        },
+        error: err => {
+          console.error('Erreur lors du chargement des livres', err);
+        }
+      });
     }
   }
 

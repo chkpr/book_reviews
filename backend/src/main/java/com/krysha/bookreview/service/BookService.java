@@ -47,6 +47,7 @@ public class BookService {
 			if(book.getIsbn() !=null) existing.setIsbn(book.getIsbn());
 			if(book.getSummary() !=null) existing.setSummary(book.getSummary());
 			if(book.getPublishedYear() !=null) existing.setPublishedYear(book.getPublishedYear());
+			if(book.getCoverUrl() !=null) existing.setCoverUrl(book.getCoverUrl());
 			if (book.getAuthor() != null) existing.setAuthor(book.getAuthor());
 	        if (book.getCategories() != null && !book.getCategories().isEmpty()) 
 	            existing.setCategories(book.getCategories());

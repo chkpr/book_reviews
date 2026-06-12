@@ -16,6 +16,7 @@ public class BookResponse {
 	private String isbn;
 	private String summary;
 	private Integer publishedYear;
+	private String coverUrl;
 	private AuthorResponse author;
 	private List<CategoryResponse> categories;
 	
@@ -26,6 +27,7 @@ public class BookResponse {
 				book.getIsbn(),
 				book.getSummary(),
 				book.getPublishedYear(),
+				book.getCoverUrl(),
 				AuthorResponse.from(book.getAuthor()),
 				book.getCategories().stream()
 					.map(CategoryResponse::from)

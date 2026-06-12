@@ -12,37 +12,11 @@ import {Router} from '@angular/router';
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss'
 })
-export class BookComponent implements OnInit {
+export class BookComponent {
   @Input() book!: Book;
-
-  likes!: number;
-  userHasLiked!: boolean;
 
   constructor(private booksService: BooksService,
               private router: Router) {}
-
-  ngOnInit() {
-    this.likes = 5;
-    this.userHasLiked = false;
-  }
-
-  onLike() {
-    if(this.userHasLiked){
-      this.unLike();
-    } else {
-      this.like();
-    }
-  }
-
-  unLike() {
-    this.booksService.likeBookById(this.book.id, 'unlike');
-    this.userHasLiked = false;
-  }
-
-  like(): void {
-    this.booksService.likeBookById(this.book.id, 'like');
-    this.userHasLiked = true;
-  }
 
   onViewBook(){
     this.router.navigateByUrl(`books/${this.book.id}`);
