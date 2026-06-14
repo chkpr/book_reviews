@@ -3,10 +3,13 @@ package com.krysha.bookreview.controller;
 import com.krysha.bookreview.dto.AuthResponse;
 import com.krysha.bookreview.dto.LoginRequest;
 import com.krysha.bookreview.dto.RegisterRequest;
+import com.krysha.bookreview.dto.UserResponse;
+import com.krysha.bookreview.model.User;
 import com.krysha.bookreview.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,5 +27,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+    
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(@AuthenticationPrincipal User user) {
+    	return ResponseEntity.ok(UserResponse.from(user));
     }
 }

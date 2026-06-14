@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import { User } from '../models/user';
 
 interface AuthResponse {
   token: string;
@@ -51,6 +52,10 @@ export class AuthService {
 
   private storeToken(token: string): void {
   localStorage.setItem('token', token);
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`)
   }
 }
 
