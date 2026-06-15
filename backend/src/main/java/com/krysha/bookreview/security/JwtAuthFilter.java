@@ -53,6 +53,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // Token invalide ou expiré : on continue sans authentifier.
             // Les routes publiques (permitAll) resteront accessibles,
             // les routes protégées renverront 401/403 via AuthorizationFilter.
+        	
+            logger.debug("JWT invalide ou expiré : " + e.getMessage());
+        	
             SecurityContextHolder.clearContext();
         }
 
