@@ -50,20 +50,14 @@ public class ReviewController {
     }
 
     @DeleteMapping("/reviews/{id}")
-    private ResponseEntity<Void> deleteReview(@PathVariable Long id) {
-        if (!reviewService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        reviewService.deleteReview(id);
+    private ResponseEntity<Void> deleteReview(@PathVariable Long id, @AuthenticationPrincipal User currentUser) {
+        reviewService.deleteReview(id, currentUser);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/reviews/{id}")
-    private ResponseEntity<ReviewResponse> putReview(@PathVariable Long id, @RequestBody Review reviewUpdate) {
-        if (!reviewService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        Review updated = reviewService.updateReview(id, reviewUpdate);
+    private ResponseEntity<ReviewResponse> putReview(@PathVariable Long id, @RequestBody Review reviewUpdate, @AuthenticationPrincipal User currentUser) {
+        Review updated = reviewService.updateReview(id, reviewUpdate, currentUser);
         return ResponseEntity.ok(ReviewResponse.from(updated));
     }
 }

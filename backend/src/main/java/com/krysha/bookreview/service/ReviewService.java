@@ -5,8 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.krysha.bookreview.exception.AccessDeniedException;
 import com.krysha.bookreview.model.Review;
+import com.krysha.bookreview.model.User;
 import com.krysha.bookreview.repository.ReviewRepository;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 @Service
 public class ReviewService {
@@ -22,7 +27,14 @@ public class ReviewService {
 		return reviewRepository.findAll();
 	}
 	
-	public void deleteReview(final Long id) {
+	public void deleteReview(final Long id, User currentUser) {
+		Review existingReview = reviewRepository.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Review non trouvée"));
+		
+		if (!existingReview.getUser().getId().equals(currentUser.getId())) {
+			throw new AccessDeniedException("Vous ne pouvez supprimer que vos propres reviews");
+		}
+		
 		reviewRepository.deleteById(id);
 	}
 	
@@ -31,12 +43,18 @@ public class ReviewService {
 		return savedReview;
 	}
 	
-	public Review updateReview(final Long id, Review review) {
-	    if (reviewRepository.existsById(id)) {
-	        review.setId(id);
-	        return reviewRepository.save(review);
+	public Review updateReview(final Long id, Review reviewUpdate, User currentUser) {
+		
+	    Review existingReview = reviewRepository.findById(id)
+	    		.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Review non trouvée"));
+	    
+	    if (!existingReview.getUser().getId().equals(currentUser.getId())) {
+	    	throw new AccessDeniedException("Vous ne pouvez modifier que vos propres reviews.");
 	    }
-	    throw new RuntimeException("Review non trouvée");
+	    
+	    reviewUpdate.setId(id);
+	    reviewUpdate.setUser(existingReview.getUser());
+	    return reviewRepository.save(reviewUpdate);
 	}
 	
 	public Optional<Review> patchReview(final Long id, Review review) {
