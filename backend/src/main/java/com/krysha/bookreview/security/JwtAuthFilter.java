@@ -28,29 +28,32 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-
         final String authHeader = request.getHeader("Authorization");
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         final String jwt = authHeader.substring(7);
-        final String email = jwtService.extractEmail(jwt);
-
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var user = userRepository.findByEmail(email).orElse(null);
-
-            if (user != null && jwtService.isTokenValid(jwt, user)) {
-                var authToken = new UsernamePasswordAuthenticationToken(
-                        user,
-                        null,
-                        user.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try {
+            final String email = jwtService.extractEmail(jwt);
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                var user = userRepository.findByEmail(email).orElse(null);
+                if (user != null && jwtService.isTokenValid(jwt, user)) {
+                    var authToken = new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            user.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (Exception e) {
+            // Token invalide ou expiré : on continue sans authentifier.
+            // Les routes publiques (permitAll) resteront accessibles,
+            // les routes protégées renverront 401/403 via AuthorizationFilter.
+            SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);

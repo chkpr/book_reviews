@@ -13,6 +13,7 @@ import com.krysha.bookreview.model.Book;
 import com.krysha.bookreview.service.BookService;
 
 @RestController
+@RequestMapping("/api")
 public class BookController {
 	
 	@Autowired
