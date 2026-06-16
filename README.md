@@ -1,6 +1,6 @@
 # BookReviews
 
-A full stack multiuser app built with Angular and Spring Boot to discover books and share reviews. Originally a book presentation app built with Angular 19, developed as a personal project to practive Angular after completing OpenClassrooms Angular courses. Taking it further with new functionalities to coninue practiving and learning.
+A full stack multiuser app built with Angular and Spring Boot to discover books and share reviews. Originally a book presentation app built with Angular 19, developed as a personal project to practice Angular after completing OpenClassrooms Angular courses. Taking it further with new functionalities to continue practicing and learning.
 
 ## Tech stack
 
