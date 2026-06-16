@@ -4,11 +4,12 @@ import {LandingPageComponent} from './landing-page/landing-page.component';
 import {SingleBookComponent} from './single-book/single-book.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
+import {authGuard} from './auth.guard';
 
 export const routes: Routes = [
-  {path:'books/:id', component: SingleBookComponent},
-  { path: 'books', component: BookListComponent },
   { path: '', component: LandingPageComponent},
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'books', component: BookListComponent, canActivate: [authGuard] },
+  { path: 'books/:id', component: SingleBookComponent, canActivate: [authGuard] },
 ];
