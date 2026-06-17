@@ -19,6 +19,11 @@ a {
   }
 }
 
+.header-menu {
+  display: flex;
+  flex-direction: row;
+}
+
 .active {
   color: #666;
   text-decoration: underline;

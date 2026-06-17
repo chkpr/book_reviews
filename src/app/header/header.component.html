@@ -1,7 +1,17 @@
 <header>
   <h1>Book reviews</h1>
-  <nav>
-    <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    <a routerLink="books" routerLinkActive="active">Reviews</a>
+  <nav class="header-menu">
+    <div>
+      <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="books" routerLinkActive="active">Reviews</a>
+    </div>
+    <div class="login-register-buttons">
+      @if (authService.isLoggedIn()) {
+        <button (click)="logout()">Déconnexion</button>
+      } @else {
+        <a routerLink="login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Connexion</a>
+        <a routerLink="register" routerLinkActive="active">Inscription</a>
+      }
+    </div>
   </nav>
 </header>
