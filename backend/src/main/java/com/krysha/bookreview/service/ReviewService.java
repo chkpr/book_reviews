@@ -69,5 +69,7 @@ public class ReviewService {
 	    return reviewRepository.existsById(id);
 	}
 	
-	
+	public List<Review> getReviewsByBookId(Long bookId) {
+		return reviewRepository.findByBookId(bookId);
+	}
 }

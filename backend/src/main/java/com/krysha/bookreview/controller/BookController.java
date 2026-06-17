@@ -1,6 +1,7 @@
 package com.krysha.bookreview.controller;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.krysha.bookreview.dto.BookResponse;
+import com.krysha.bookreview.dto.ReviewResponse;
 import com.krysha.bookreview.model.Book;
 import com.krysha.bookreview.service.BookService;
+import com.krysha.bookreview.service.ReviewService;
 
 @RestController
-@RequestMapping("/api")
 public class BookController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private ReviewService reviewService;
 	
 	@GetMapping("/books")
 	public Iterable<BookResponse> getBooks() {
@@ -63,5 +68,10 @@ public class BookController {
     return ResponseEntity.ok(BookResponse.from(updated));
 	}
 	
-	
+	@GetMapping("/books/{id}/reviews")
+		public List<ReviewResponse>getReviewsByBook(@PathVariable Long id) {
+			return reviewService.getReviewsByBookId(id).stream()
+				.map(ReviewResponse::from)
+				.toList();
+	}
 }
