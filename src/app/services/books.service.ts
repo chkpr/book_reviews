@@ -15,7 +15,7 @@ import {Book} from '../models/book';
       return this.http.get<Book[]>(this.apiUrl);
     }
 
-    getBooksById(id: number): Observable<Book> {
+    getBookById(id: number): Observable<Book> {
       return this.http.get<Book>(`${this.apiUrl}/${id}`);
     }
   }

@@ -6,6 +6,11 @@
     <h2>{{ book.title }}</h2>
     <p class="author">{{ book.author.firstname }} {{ book.author.name }}</p>
     <p class="published">{{ book.publishedYear }}</p>
+    <div class="categories">
+      @for (category of book.categories; track category.id) {
+        <span class="category-tag">{{ category.name }}</span>
+      }
+    </div>
   </div>
   <div class="review">
     <p class="description">{{ book.summary }}</p>
@@ -13,3 +18,19 @@
   </div>
 </div>
 }
+
+<div class="reviews-section">
+  <h3>Reviews ({{ reviews.length }})</h3>
+  @if (reviews.length === 0) {
+    <p>Aucune review pour ce livre.</p>
+  } @else {
+    @for (review of reviews; track review.id) {
+      <div class="review-card">
+        <p class="rating">{{ review.rating }}/5</p>
+        <p class="comment">{{ review.comment }}</p>
+        <p class="author">{{ review.username }}</p>
+      </div>
+    }
+  }
+</div>
+
