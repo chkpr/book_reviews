@@ -4,10 +4,11 @@ import {BooksService} from '../services/books.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Review} from '../models/review';
 import {ReviewService} from '../services/review.service';
+import {ReviewFormComponent} from '../review-form/review-form.component';
 
 @Component({
   selector: 'app-single-book',
-  imports: [    RouterLink  ],
+  imports: [RouterLink, ReviewFormComponent],
   templateUrl: './single-book.component.html',
   styleUrl: './single-book.component.scss'
 })

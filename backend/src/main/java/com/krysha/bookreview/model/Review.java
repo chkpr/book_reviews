@@ -10,7 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="reviews")
+@Table(name="reviews", uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"user_id", "book_id"})
+})
 @EntityListeners(AuditingEntityListener.class)
 public class Review {
 	
@@ -36,4 +38,6 @@ public class Review {
 	@ManyToOne
 	@JoinColumn(name="book_id", nullable=false)
 	private Book book;
+	
+
 }

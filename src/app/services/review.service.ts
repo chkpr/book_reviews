@@ -10,9 +10,20 @@ export class ReviewService {
 
   private apiUrl = 'http://localhost:8080';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getReviewsByBookId(bookId: number): Observable<Review[]> {
     return this.http.get<Review[]>(`${this.apiUrl}/books/${bookId}/reviews`);
   }
+
+
+  createReview(comment: string, rating: number, bookId: number):Observable<Review[]> {
+    return this.http.post<Review[]>(`${this.apiUrl}/reviews`, {
+      comment: comment,
+      rating: rating,
+      book: {id: bookId}
+  });
+  }
+
 }
