@@ -51,7 +51,9 @@ Open your browser at `http://localhost:4200`
 - [Perfectionnez-vous sur Angular](https://openclassrooms.com/fr/courses/7471281-perfectionnez-vous-sur-angular)
 - [Building a REST API with Spring Boot](https://spring.academy/courses/building-a-rest-api-with-spring-boot)
 - [Sécurisez votre application web avec Spring Security](http://openclassrooms.com/fr/courses/7137776-securisez-votre-application-web-avec-spring-security)
+- AI Implementation: [*Spring AI in Action* by Craig Walls (Manning)](https://www.manning.com/books/spring-ai-in-action)
 
 ## Notes
 
 This project was developed as a learning exercise and is not intended for production use.
+
