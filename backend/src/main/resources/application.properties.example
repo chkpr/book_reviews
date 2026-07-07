@@ -7,3 +7,4 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 app.jwt.secret=jwt_secret
 app.jwt.expiration=86400000
 logging.level.org.springframework.security=DEBUG
+spring.ai.ollama.chat.options.model=MODEL 
