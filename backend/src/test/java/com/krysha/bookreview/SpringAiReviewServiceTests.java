@@ -59,22 +59,22 @@ public class SpringAiReviewServiceTests {
 	
 	@Test
 	public void evaluateFactualAccuracy() {
-	var userText = "Why is the sky blue?";
-	var question = new Question(userText);
-	var answer = springAiReviewService.askQuestion(question);
-	var evaluationRequest =
-	new EvaluationRequest(userText, answer.answer());
-	var response =
-	factCheckingEvaluator.evaluate(evaluationRequest);
-	Assertions.assertThat(response.isPass())
-	.withFailMessage("""
+		var userText = "Why is the sky blue?";
+		var question = new Question(userText);
+		var answer = springAiReviewService.askQuestion(question);
+		var evaluationRequest =
+					new EvaluationRequest(userText, answer.answer());
+					var response =
+							factCheckingEvaluator.evaluate(evaluationRequest);
+							Assertions.assertThat(response.isPass())
+							.withFailMessage("""
+									}
+									========================================
+									The answer "%s"
+									is not considered correct for the question
+									"%s".
+									========================================
+										""", answer.answer(), userText)
+							.isTrue();
 	}
-	========================================
-	The answer "%s"
-	is not considered correct for the question
-	"%s".
-	========================================
-	""", answer.answer(), userText)
-	.isTrue();
-
 }
