@@ -36,9 +36,13 @@ public class SpringAiReviewServiceTests {
 	
 	@Test
 	public void evaluateRelevancy() {
-		String userText = "Why is the sky blue?";
-		Question question = new Question(userText);
+		String bookTitle = "Anna Karenina";
+		String userText = "Who is Anna Karenina?";
+		Question question = new Question(bookTitle, userText);
 		Answer answer = springAiReviewService.askQuestion(question);
+		
+	    String evaluatedText =
+	            "Answer this question about " + bookTitle + ": " + userText;
 		
 		EvaluationRequest evaluationRequest = new EvaluationRequest(
 				userText, answer.answer());
@@ -59,16 +63,21 @@ public class SpringAiReviewServiceTests {
 	
 	@Test
 	public void evaluateFactualAccuracy() {
-		var userText = "Why is the sky blue?";
-		var question = new Question(userText);
-		var answer = springAiReviewService.askQuestion(question);
+		String bookTitle = "Anna Karenina";
+		String userText = "Who is Anna Karenina?";
+		Question question = new Question(bookTitle, userText);
+	    Answer answer = springAiReviewService.askQuestion(question);
+
+	    String evaluatedText =
+	        "Answer this question about " + bookTitle + ": " + userText;
+	    
 		var evaluationRequest =
-					new EvaluationRequest(userText, answer.answer());
+					new EvaluationRequest(evaluatedText, answer.answer());
 					var response =
 							factCheckingEvaluator.evaluate(evaluationRequest);
 							Assertions.assertThat(response.isPass())
 							.withFailMessage("""
-									}
+									
 									========================================
 									The answer "%s"
 									is not considered correct for the question

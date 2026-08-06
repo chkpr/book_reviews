@@ -17,11 +17,15 @@ public class SpringAiReviewService implements AIReviewService{
 	
 	@Override
 	public Answer askQuestion(Question question) {
+		String prompt =
+				"Answer this question about " + question.bookTitle() +
+				": " + question.question();
+		
 		var answerText = chatClient.prompt()
 				.user(question.question())
 				.call()
 				.content();
-		return new Answer(answerText);
+		return new Answer(question.bookTitle(), answerText);
 	}
 
 }

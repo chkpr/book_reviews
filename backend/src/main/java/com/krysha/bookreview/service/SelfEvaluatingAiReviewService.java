@@ -27,15 +27,19 @@ public class SelfEvaluatingAiReviewService implements AIReviewService {
 	@Override
 	@Retryable(retryFor = AnswerNotRelevantException.class)
 	public Answer askQuestion(Question question) {
+		 String prompt =
+			        "Answer this question about " + question.bookTitle() +
+			        ": " + question.question();
+
 		var answerText = chatClient.prompt().user(question.question()).call().content();
 		evaluateRelevancy(question, answerText);
 
-		return new Answer(answerText);
+		return new Answer(question.bookTitle(), answerText);
 	}
 
 	@Recover
-	public Answer recover(AnswerNotRelevantException e) {
-		return new Answer("I'm sorry, I wasn't able to answer the question.");
+	public Answer recover(AnswerNotRelevantException e, Question question) {
+		return new Answer(question.bookTitle(), "I'm sorry, I wasn't able to answer the question.");
 	}
 
 	private void evaluateRelevancy(Question question, String answerText) {

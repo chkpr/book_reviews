@@ -8,6 +8,8 @@ import com.krysha.bookreview.records.Answer;
 import com.krysha.bookreview.records.Question;
 import com.krysha.bookreview.service.AIReviewService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class AskController {
 	
@@ -18,7 +20,7 @@ public class AskController {
 	}
 	
 	@PostMapping(path="/ask", produces="application/json")
-	public Answer ask(@RequestBody Question question) {
+	public Answer ask(@RequestBody @Valid Question question) {
 		return aiReviewService.askQuestion(question);
 	}
 
