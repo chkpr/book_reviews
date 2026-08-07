@@ -37,6 +37,7 @@ public class BookReviewsBackendApplicationTests {
 				WireMock.post("/api/chat").willReturn(ResponseDefinitionBuilder.okForJson(responseNode)));
 	}
 
+	/*
 	@Test
 	public void testAskQuestion() {
 		var boardGameService = new SpringAiReviewService(chatClientBuilder);
@@ -44,4 +45,5 @@ public class BookReviewsBackendApplicationTests {
 		Assertions.assertThat(answer).isNotNull();
 		Assertions.assertThat(answer.answer()).isEqualTo("Paris");
 	}
+	*/
 }

@@ -15,16 +15,20 @@ public class SpringAiReviewService implements AIReviewService{
 		this.chatClient = chatClientBuilder.build();
 	}
 	
+	private static final String questionPromptTemplate = """
+			Answer this question about {book}: {question}
+			""";
+	
 	@Override
-	public Answer askQuestion(Question question) {
-		String prompt =
-				"Answer this question about " + question.bookTitle() +
-				": " + question.question();
-		
+	public Answer askQuestion(Question question) {		
 		var answerText = chatClient.prompt()
-				.user(question.question())
+				.user(userSpec -> userSpec
+						.text(questionPromptTemplate)
+						.param("bookTitle", question.bookTitle())
+						.param("question", question.question()))
 				.call()
 				.content();
+		
 		return new Answer(question.bookTitle(), answerText);
 	}
 
