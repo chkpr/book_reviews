@@ -16,7 +16,13 @@ public class SpringAiReviewService implements AIReviewService{
 	}
 	
 	private static final String questionPromptTemplate = """
-			Answer this question about {book}: {question}
+			You are a helpful assistant, answering questions about books. 
+			If you don't know anything about the book or don't know the answer, 
+			say "I don't know".
+			
+			The book is {book}.
+			
+			The question is: {question}.
 			""";
 	
 	@Override
