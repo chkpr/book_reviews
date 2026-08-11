@@ -23,7 +23,7 @@ public class BookContentService {
 					.getResource(filename)
 					.getContentAsString(Charset.defaultCharset()); 
 		} catch (IOException e) {
-			LOG.info("No rules found for game: " + bookName);
+			LOG.info("No content found for book: " + bookName);
 			return "";
 		}
 	}
