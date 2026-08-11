@@ -19,19 +19,19 @@ public class SpringAiReviewService implements AIReviewService{
 		this.bookContentService = bookContentService;
 	}
 	
-	@Value("classpath:/promptTemplates/questionPromptTemplate.st")
-	Resource questionPromptTemplate;
+	@Value("classpath:/promptTemplates/systemPromptTemplate.st")
+	Resource promptTemplate;
 	
 	@Override
 	public Answer askQuestion(Question question) {	
 		var bookContent = bookContentService.getContentFor(question.bookTitle());
 		
 		var answerText = chatClient.prompt()
-				.user(userSpec -> userSpec
-						.text(questionPromptTemplate)
+				.system(systemSpec -> systemSpec
+						.text(promptTemplate)
 						.param("bookTitle", question.bookTitle())
-						.param("question", question.question())
 						.param("content", bookContent))
+				.user(question.question())
 				.call()
 				.content();
 		
