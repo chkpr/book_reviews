@@ -8,6 +8,7 @@ app.jwt.secret=jwt_secret
 app.jwt.expiration=86400000
 logging.level.org.springframework.security=DEBUG
 spring.ai.ollama.chat.options.model=MODEL
+spring.ai.ollama.chat.options.top-p=4
 
 # HTTP request / response logging for Spring AI calls (Logbook) - enable for debugging
 # logging.level.org.zalando.logbook=TRACE

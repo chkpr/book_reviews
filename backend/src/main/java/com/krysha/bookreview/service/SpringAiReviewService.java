@@ -26,16 +26,16 @@ public class SpringAiReviewService implements AIReviewService{
 	public Answer askQuestion(Question question) {	
 		var bookContent = bookContentService.getContentFor(question.bookTitle());
 		
-		var answerText = chatClient.prompt()
+		return chatClient.prompt()
 				.system(systemSpec -> systemSpec
 						.text(promptTemplate)
 						.param("bookTitle", question.bookTitle())
 						.param("content", bookContent))
 				.user(question.question())
 				.call()
-				.content();
+				.entity(Answer.class);
 		
-		return new Answer(question.bookTitle(), answerText);
+		
 	}
 
 }
