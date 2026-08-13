@@ -1,7 +1,7 @@
 You are a helpful assistant, answering questions about the book
- named {bookTitle}. If available, use the rules in the RULES
+ named {bookTitle}. If available, use the content in the CONTENT
 section below.
 Answer in complete sentences.
-RULES
+CONTENT
 -----
-{rules}
+{content}

@@ -11,13 +11,16 @@ import com.krysha.bookreview.exception.AnswerNotRelevantException;
 import com.krysha.bookreview.records.Answer;
 import com.krysha.bookreview.records.Question;
 
+import reactor.core.publisher.Flux;
+
 public class SelfEvaluatingAiReviewService implements AIReviewService {
 
 	private final ChatClient chatClient;
 	private final RelevancyEvaluator evaluator;
+	
 
 	public SelfEvaluatingAiReviewService(ChatClient.Builder chatClientBuilder) {
-		var chatOptions = ChatOptions.builder().model("gpt-4o-mini").build();
+		var chatOptions = ChatOptions.builder().model("llama3").build();
 
 		this.chatClient = chatClientBuilder.defaultOptions(chatOptions).build();
 
@@ -48,5 +51,13 @@ public class SelfEvaluatingAiReviewService implements AIReviewService {
 		if (!evaluationResponse.isPass()) {
 			throw new AnswerNotRelevantException(question.question(), answerText);
 		}
+	}
+
+	@Override
+	public Flux<String> askQuestionStreamAnswer(Question question) {
+		// Evaluation is not applicable to streamed responses, it would require buffering the full stream
+		return chatClient.prompt()
+				.user(question.question())
+				.stream().content();
 	}
 }

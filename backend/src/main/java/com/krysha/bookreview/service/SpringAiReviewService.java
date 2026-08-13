@@ -8,34 +8,38 @@ import org.springframework.stereotype.Service;
 import com.krysha.bookreview.records.Answer;
 import com.krysha.bookreview.records.Question;
 
+import reactor.core.publisher.Flux;
+
 @Service
-public class SpringAiReviewService implements AIReviewService{
-	
+public class SpringAiReviewService implements AIReviewService {
+
 	private final ChatClient chatClient;
 	private final BookContentService bookContentService;
-	
+
 	public SpringAiReviewService(ChatClient.Builder chatClientBuilder, BookContentService bookContentService) {
 		this.chatClient = chatClientBuilder.build();
 		this.bookContentService = bookContentService;
 	}
-	
+
 	@Value("classpath:/promptTemplates/systemPromptTemplate.st")
 	Resource promptTemplate;
-	
+
 	@Override
-	public Answer askQuestion(Question question) {	
+	public Answer askQuestion(Question question) {
+		var bookContent = bookContentService.getContentFor(question.bookTitle());
+
+		return chatClient.prompt().system(systemSpec -> systemSpec.text(promptTemplate)
+				.param("bookTitle", question.bookTitle()).param("content", bookContent)).user(question.question())
+				.call().entity(Answer.class);
+	}
+
+	@Override
+	public Flux<String> askQuestionStreamAnswer(Question question) {
 		var bookContent = bookContentService.getContentFor(question.bookTitle());
 		
-		return chatClient.prompt()
-				.system(systemSpec -> systemSpec
-						.text(promptTemplate)
-						.param("bookTitle", question.bookTitle())
-						.param("content", bookContent))
-				.user(question.question())
-				.call()
-				.entity(Answer.class);
-		
-		
+		return chatClient.prompt().system(systemSpec->systemSpec.text(promptTemplate)
+				.param("bookTitle",question.bookTitle()).param("content",bookContent)).user(question.question())
+				.stream().content();
 	}
 
 }

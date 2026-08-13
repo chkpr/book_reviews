@@ -9,6 +9,7 @@ import com.krysha.bookreview.records.Question;
 import com.krysha.bookreview.service.AIReviewService;
 
 import jakarta.validation.Valid;
+import reactor.core.publisher.Flux;
 
 @RestController
 public class AskController {
@@ -22,6 +23,11 @@ public class AskController {
 	@PostMapping(path="/ask", produces="application/json")
 	public Answer ask(@RequestBody @Valid Question question) {
 		return aiReviewService.askQuestion(question);
+	}
+	
+	@PostMapping(path="/ask/stream", produces="application/json")
+	public Flux<String> askStream(@RequestBody Question question) {
+		return aiReviewService.askQuestionStreamAnswer(question);
 	}
 
 }
