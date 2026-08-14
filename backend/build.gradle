@@ -28,6 +28,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
     implementation 'org.zalando:logbook-spring-boot-starter:3.9.0'
+    implementation 'org.springframework.boot:spring-boot-docker-compose'
+    implementation 'org.springframework.ai:spring-ai-spring-boot-docker-compose'
     
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
