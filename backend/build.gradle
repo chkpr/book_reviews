@@ -18,7 +18,9 @@ repositories {
 }
 
 ext {
+    springCloudVersion = '2025.0.0'
     set('springAiVersion', "1.0.3")
+    springFunctionsCatalogVersion = '5.1.0'
     }
 
 dependencies {
@@ -30,6 +32,12 @@ dependencies {
     implementation 'org.zalando:logbook-spring-boot-starter:3.9.0'
     implementation 'org.springframework.boot:spring-boot-docker-compose'
     implementation 'org.springframework.ai:spring-ai-spring-boot-docker-compose'
+    implementation 'org.springframework.cloud.fn:spring-file-supplier'
+    implementation 'org.springframework.cloud:spring-cloud-function-context'
+    implementation 'org.springframework.ai:spring-ai-tika-document-reader'
+    implementation('org.springframework.ai:spring-ai-starter-vector-store-qdrant')
+    implementation 'org.springframework.ai:spring-ai-advisors-vector-store'
+    
     
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -50,6 +58,8 @@ dependencies {
 dependencyManagement {
     imports {
         mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+        mavenBom "org.springframework.cloud.fn:" +"spring-functions-catalog-bom:" +"$springFunctionsCatalogVersion"
+        mavenBom "org.springframework.cloud:" +"spring-cloud-dependencies:" +"$springCloudVersion"
     }
 }
 
