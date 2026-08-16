@@ -4,3 +4,12 @@ spring.ai.vectorstore.qdrant.initialize-schema=true
 spring.ai.vectorstore.qdrant.collection-name=BookContent
 spring.ai.ollama.embedding.options.model=nomic-embed-text
 
+spring.cloud.function.definition=\
+    fileSupplier|\
+    documentReader|\
+    splitter|\
+    titleDeterminer|\
+    vectorStoreConsumer
+    
+file.supplier.directory="/var/dropoff"
+file.supplier.filename-regex=.*\.(pdf|docx|txt)
