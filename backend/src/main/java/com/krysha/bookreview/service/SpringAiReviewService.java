@@ -32,23 +32,19 @@ public class SpringAiReviewService implements AIReviewService {
 
 	@Override
 	public Answer askQuestion(Question question) {
-		var bookContent = bookContentService.getContentFor(question.bookTitle());
+		var bookContent = bookContentService.getContentFor(question.bookTitle(), question.question());
 
-		var responseEntity = chatClient.prompt()
+		var answer = chatClient.prompt()
 				.system(systemSpec -> systemSpec
 						.text(promptTemplate)
 						.param("bookTitle", question.bookTitle())
 						.param("content", bookContent))
 				.user(question.question())
 				.call()
-				.responseEntity(Answer.class);
+				.content();
+	
 		
-		var response = responseEntity.response();
-		
-		var metadata = response.getMetadata();
-		logUsage(metadata.getUsage());
-		
-		return responseEntity.entity();
+		return new Answer(question.bookTitle(), answer);
 		
 	}
 	
@@ -62,7 +58,7 @@ public class SpringAiReviewService implements AIReviewService {
 
 	@Override
 	public Flux<String> askQuestionStreamAnswer(Question question) {
-		var bookContent = bookContentService.getContentFor(question.bookTitle());
+		var bookContent = bookContentService.getContentFor(question.bookTitle(), question.question());
 		
 		return chatClient.prompt().system(systemSpec->systemSpec.text(promptTemplate)
 				.param("bookTitle",question.bookTitle()).param("content",bookContent)).user(question.question())
