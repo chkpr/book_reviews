@@ -7,25 +7,50 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BookContentService {
 	
-	private static final Logger LOG =
-			LoggerFactory.getLogger(BookContentService.class);
+	private final VectorStore vectorStore;
 	
-	public String getContentFor(String bookName) {
-		try {
-			var filename = String.format(
-					"classpath:/bookContent/%s.txt",
-					bookName.toLowerCase().replace(" ", "_"));
-			
-			return new DefaultResourceLoader()
-					.getResource(filename)
-					.getContentAsString(Charset.defaultCharset()); 
-		} catch (IOException e) {
-			LOG.info("No content found for book: " + bookName);
-			return "";
+	public BookContentService(VectorStore vectorStore) {
+		this.vectorStore = vectorStore;
+	}
+	
+	
+	public String getContentFor(String bookName, String question) {
+		var searchRequest = SearchRequest
+				.builder()
+				.query(question)
+				.filterExpression(
+						new FilterExpressionBuilder()
+						.eq("bookTitle", normalizeBookTitle(bookName)).build())
+				.build();
+		
+		System.err.println("Search request: " + searchRequest);
+		
+		var similarDocs =
+				vectorStore.similaritySearch(searchRequest);
+		
+		if(similarDocs.isEmpty()) {
+			return "The content for " + bookName + " is not available.";
 		}
+		
+		return similarDocs.stream()
+				.map(Document::getText)
+				.collect(Collectors.joining(System.lineSeparator()));
+	}
+	
+	private String normalizeBookTitle(String bookTitle) {
+		return bookTitle.toLowerCase().replace(" ", "_");
+				
 	}
 
 }
