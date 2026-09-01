@@ -13,6 +13,7 @@ import com.krysha.bookreview.records.Question;
 
 import reactor.core.publisher.Flux;
 
+
 public class SelfEvaluatingAiReviewService implements AIReviewService {
 
 	private final ChatClient chatClient;

@@ -3,6 +3,7 @@ package com.krysha.bookreview.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -12,6 +13,9 @@ import com.krysha.bookreview.records.Answer;
 import com.krysha.bookreview.records.Question;
 
 import reactor.core.publisher.Flux;
+import static org.springframework.ai.chat.client.advisor
+.vectorstore.QuestionAnswerAdvisor.FILTER_EXPRESSION;
+
 
 @Service
 public class SpringAiReviewService implements AIReviewService {
@@ -32,19 +36,19 @@ public class SpringAiReviewService implements AIReviewService {
 
 	@Override
 	public Answer askQuestion(Question question) {
-		var bookContent = bookContentService.getContentFor(question.bookTitle(), question.question());
-
-		var answer = chatClient.prompt()
+		
+		String bookNameMatch = String.format("bookTitle == '%s", normalizeBookTitle(question.bookTitle()));
+		
+		return chatClient.prompt()
 				.system(systemSpec -> systemSpec
 						.text(promptTemplate)
-						.param("bookTitle", question.bookTitle())
-						.param("content", bookContent))
+						.param("bookTitle", question.bookTitle()))
 				.user(question.question())
+				.advisors(advisorSpec ->
+						advisorSpec.param(FILTER_EXPRESSION, bookNameMatch))
 				.call()
-				.content();
-	
-		
-		return new Answer(question.bookTitle(), answer);
+				.entity(Answer.class);
+						
 		
 	}
 	
@@ -64,5 +68,7 @@ public class SpringAiReviewService implements AIReviewService {
 				.param("bookTitle",question.bookTitle()).param("content",bookContent)).user(question.question())
 				.stream().content();
 	}
+	
+
 
 }
