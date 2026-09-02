@@ -49,8 +49,7 @@ public class BookContentService {
 	}
 	
 	private String normalizeBookTitle(String bookTitle) {
-		return bookTitle.toLowerCase().replace(" ", "_");
-				
+		return bookTitle.toLowerCase().replace(" ", "_");			
 	}
 
 }

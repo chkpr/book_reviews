@@ -13,8 +13,9 @@ import com.krysha.bookreview.records.Answer;
 import com.krysha.bookreview.records.Question;
 
 import reactor.core.publisher.Flux;
-import static org.springframework.ai.chat.client.advisor
-.vectorstore.QuestionAnswerAdvisor.FILTER_EXPRESSION;
+
+import static org.springframework.ai.rag.retrieval.search
+.VectorStoreDocumentRetriever.FILTER_EXPRESSION;
 
 
 @Service
@@ -70,5 +71,8 @@ public class SpringAiReviewService implements AIReviewService {
 	}
 	
 
+	private String normalizeBookTitle(String bookTitle) {
+		return bookTitle.toLowerCase().replace(" ", "_");			
+	}
 
 }
