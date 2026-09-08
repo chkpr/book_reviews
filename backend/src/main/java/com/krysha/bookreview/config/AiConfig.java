@@ -4,6 +4,7 @@ package com.krysha.bookreview.config;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,11 @@ public class AiConfig {
 						VectorStoreDocumentRetriever.builder()
 							.vectorStore(vectorStore)
 							.build())
+				.queryTransformers(
+						RewriteQueryTransformer.builder()
+							.chatClientBuilder(chatClientBuilder)
+							.build())
+				
 				.build();
 				
 		return chatClientBuilder
@@ -27,3 +33,4 @@ public class AiConfig {
 				.build();
 	}
 }
+
