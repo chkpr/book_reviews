@@ -5,6 +5,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
+import org.springframework.ai.rag.preretrieval.query.transformation.TranslationQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,10 @@ public class AiConfig {
 							.vectorStore(vectorStore)
 							.build())
 				.queryTransformers(
+						TranslationQueryTransformer.builder()
+							.chatClientBuilder(chatClientBuilder)
+							.targetLanguage("English")
+							.build(),
 						RewriteQueryTransformer.builder()
 							.chatClientBuilder(chatClientBuilder)
 							.build())
