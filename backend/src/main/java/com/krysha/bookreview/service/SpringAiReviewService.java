@@ -38,7 +38,7 @@ public class SpringAiReviewService implements AIReviewService {
 	@Override
 	public Answer askQuestion(Question question) {
 		
-		String bookNameMatch = String.format("bookTitle == '%s", normalizeBookTitle(question.bookTitle()));
+		String bookNameMatch = String.format("bookTitle == '%s'", normalizeBookTitle(question.bookTitle()));
 		
 		return chatClient.prompt()
 				.system(systemSpec -> systemSpec
