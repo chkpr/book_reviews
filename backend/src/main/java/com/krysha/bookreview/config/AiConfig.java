@@ -20,6 +20,7 @@ public class AiConfig {
 	@Bean
 	ChatClient chatClient(
 			ChatClient.Builder chatClientBuilder, VectorStore vectorStore, ChatMemory chatMemory) {
+		/*
 		var advisor = RetrievalAugmentationAdvisor.builder()
 				.documentRetriever(
 						VectorStoreDocumentRetriever.builder()
@@ -35,7 +36,8 @@ public class AiConfig {
 							.build())
 				
 				.build();
-				
+				*/
+		
 		return chatClientBuilder
 				.defaultAdvisors(
 						MessageChatMemoryAdvisor.builder(chatMemory).build(),
