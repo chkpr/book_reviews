@@ -6,7 +6,7 @@ import com.krysha.bookreview.records.Question;
 import reactor.core.publisher.Flux;
 
 public interface AIReviewService {
-	Answer askQuestion(Question question);
+	Answer askQuestion(Question question, String conversationId);
 	
-	Flux<String> askQuestionStreamAnswer(Question question);
+	//Flux<String> askQuestionStreamAnswer(Question question);
 }

@@ -20,29 +20,13 @@ public class AiConfig {
 	@Bean
 	ChatClient chatClient(
 			ChatClient.Builder chatClientBuilder, VectorStore vectorStore, ChatMemory chatMemory) {
-		/*
-		var advisor = RetrievalAugmentationAdvisor.builder()
-				.documentRetriever(
-						VectorStoreDocumentRetriever.builder()
-							.vectorStore(vectorStore)
-							.build())
-				.queryTransformers(
-						TranslationQueryTransformer.builder()
-							.chatClientBuilder(chatClientBuilder)
-							.targetLanguage("English")
-							.build(),
-						RewriteQueryTransformer.builder()
-							.chatClientBuilder(chatClientBuilder)
-							.build())
-				
-				.build();
-				*/
+		
 		
 		return chatClientBuilder
 				.defaultAdvisors(
 						MessageChatMemoryAdvisor.builder(chatMemory).build(),
 						QuestionAnswerAdvisor.builder(vectorStore)
-							.searchRequest(SearchRequest.builder().build()).build())
+							.searchRequest(SearchRequest.builder().topK(6).build()).build())
 				.build();
 	}
 }

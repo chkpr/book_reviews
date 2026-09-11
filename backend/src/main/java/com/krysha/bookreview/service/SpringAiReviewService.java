@@ -14,8 +14,10 @@ import com.krysha.bookreview.records.Question;
 
 import reactor.core.publisher.Flux;
 
-import static org.springframework.ai.rag.retrieval.search
-.VectorStoreDocumentRetriever.FILTER_EXPRESSION;
+import static org.springframework.ai.chat.memory
+.ChatMemory.CONVERSATION_ID;
+
+import static org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor.FILTER_EXPRESSION;
 
 
 @Service
@@ -36,9 +38,12 @@ public class SpringAiReviewService implements AIReviewService {
 	Resource promptTemplate;
 
 	@Override
-	public Answer askQuestion(Question question) {
+	public Answer askQuestion(Question question, String conversationId) {
 		
 		String bookNameMatch = String.format("bookTitle == '%s'", normalizeBookTitle(question.bookTitle()));
+		
+		var debugContent = bookContentService.getContentFor(question.bookTitle(), question.question());
+		log.info("=== RAG a remonté pour '{}' ===\n{}", question.question(), debugContent);
 		
 		return chatClient.prompt()
 				.system(systemSpec -> systemSpec
@@ -46,7 +51,7 @@ public class SpringAiReviewService implements AIReviewService {
 						.param("bookTitle", question.bookTitle()))
 				.user(question.question())
 				.advisors(advisorSpec ->
-						advisorSpec.param(FILTER_EXPRESSION, bookNameMatch))
+						advisorSpec.param(FILTER_EXPRESSION, bookNameMatch).param(CONVERSATION_ID,  conversationId))
 				.call()
 				.entity(Answer.class);
 						
@@ -61,6 +66,7 @@ public class SpringAiReviewService implements AIReviewService {
 		}
 	
 
+	/*
 	@Override
 	public Flux<String> askQuestionStreamAnswer(Question question) {
 		var bookContent = bookContentService.getContentFor(question.bookTitle(), question.question());
@@ -69,7 +75,7 @@ public class SpringAiReviewService implements AIReviewService {
 				.param("bookTitle",question.bookTitle()).param("content",bookContent)).user(question.question())
 				.stream().content();
 	}
-	
+	*/
 
 	private String normalizeBookTitle(String bookTitle) {
 		return bookTitle.toLowerCase().replace(" ", "_");			

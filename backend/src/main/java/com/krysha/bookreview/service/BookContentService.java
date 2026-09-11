@@ -26,9 +26,9 @@ public class BookContentService {
 	
 	
 	public String getContentFor(String bookName, String question) {
-		var searchRequest = SearchRequest
-				.builder()
+		var searchRequest = SearchRequest.builder()
 				.query(question)
+				//.similarityThreshold(0.5)
 				.filterExpression(
 						new FilterExpressionBuilder()
 						.eq("bookTitle", normalizeBookTitle(bookName)).build())

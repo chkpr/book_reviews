@@ -2,6 +2,7 @@ package com.krysha.bookreview.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krysha.bookreview.records.Answer;
@@ -21,13 +22,18 @@ public class AskController {
 	}
 	
 	@PostMapping(path="/ask", produces="application/json")
-	public Answer ask(@RequestBody @Valid Question question) {
-		return aiReviewService.askQuestion(question);
+	public Answer ask(
+			@RequestHeader(name="X_AI_CONVERSATION_ID",
+                    defaultValue = "default") String conversationId,
+			@RequestBody @Valid Question question) {
+		return aiReviewService.askQuestion(question, conversationId);
 	}
 	
+	/*
 	@PostMapping(path="/ask/stream", produces="application/json")
 	public Flux<String> askStream(@RequestBody Question question) {
 		return aiReviewService.askQuestionStreamAnswer(question);
 	}
+	*/
 
 }

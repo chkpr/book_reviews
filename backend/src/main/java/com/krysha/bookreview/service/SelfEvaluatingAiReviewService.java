@@ -30,7 +30,7 @@ public class SelfEvaluatingAiReviewService implements AIReviewService {
 
 	@Override
 	@Retryable(retryFor = AnswerNotRelevantException.class)
-	public Answer askQuestion(Question question) {
+	public Answer askQuestion(Question question, String conversationId) {
 		 String prompt =
 			        "Answer this question about " + question.bookTitle() +
 			        ": " + question.question();
@@ -54,6 +54,7 @@ public class SelfEvaluatingAiReviewService implements AIReviewService {
 		}
 	}
 
+	/*
 	@Override
 	public Flux<String> askQuestionStreamAnswer(Question question) {
 		// Evaluation is not applicable to streamed responses, it would require buffering the full stream
@@ -61,4 +62,5 @@ public class SelfEvaluatingAiReviewService implements AIReviewService {
 				.user(question.question())
 				.stream().content();
 	}
+	*/
 }
