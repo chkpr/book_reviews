@@ -39,7 +39,7 @@ public class SpringAiReviewServiceTests {
 		String bookTitle = "Anna Karenina";
 		String userText = "Who is Anna Karenina?";
 		Question question = new Question(bookTitle, userText);
-		Answer answer = springAiReviewService.askQuestion(question);
+		Answer answer = springAiReviewService.askQuestion(question, userText);
 		
 	    String evaluatedText =
 	            "Answer this question about " + bookTitle + ": " + userText;
@@ -66,7 +66,7 @@ public class SpringAiReviewServiceTests {
 		String bookTitle = "Anna Karenina";
 		String userText = "Who is Anna Karenina?";
 		Question question = new Question(bookTitle, userText);
-	    Answer answer = springAiReviewService.askQuestion(question);
+	    Answer answer = springAiReviewService.askQuestion(question, userText);
 
 	    String evaluatedText =
 	        "Answer this question about " + bookTitle + ": " + userText;
