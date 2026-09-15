@@ -21,6 +21,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AiConfig {
+	
+	@Bean
+	ChatMemoryRepository chatMemoryRepository(DataSource dataSource) {
+		return JdbcChatMemoryRepository.builder().dialect(new PostgresChatMemoryRepositoryDialect())
+				.dataSource(dataSource).build();
+	}
 
 	@Bean
 	ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
@@ -32,13 +38,9 @@ public class AiConfig {
 
 		return chatClientBuilder
 				.defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(), QuestionAnswerAdvisor
-						.builder(vectorStore).searchRequest(SearchRequest.builder().topK(6).build()).build())
+						.builder(vectorStore).searchRequest(SearchRequest.builder().build()).build())
 				.build();
 	}
 
-	@Bean
-	ChatMemoryRepository chatMemoryRepository(DataSource dataSource) {
-		return JdbcChatMemoryRepository.builder().dialect(new PostgresChatMemoryRepositoryDialect())
-				.dataSource(dataSource).build();
-	}
+
 }

@@ -27,11 +27,10 @@ public class SpringAiReviewService implements AIReviewService {
 			LoggerFactory.getLogger(SpringAiReviewService.class);
 
 	private final ChatClient chatClient;
-	private final BookContentService bookContentService;
+	
 
-	public SpringAiReviewService(ChatClient.Builder chatClientBuilder, BookContentService bookContentService) {
-		this.chatClient = chatClientBuilder.build();
-		this.bookContentService = bookContentService;
+	public SpringAiReviewService(ChatClient chatClient) {
+		this.chatClient = chatClient;
 	}
 
 	@Value("classpath:/promptTemplates/systemPromptTemplate.st")
@@ -42,8 +41,12 @@ public class SpringAiReviewService implements AIReviewService {
 		
 		String bookNameMatch = String.format("bookTitle == '%s'", normalizeBookTitle(question.bookTitle()));
 		
+		/*
 		var debugContent = bookContentService.getContentFor(question.bookTitle(), question.question());
 		log.info("=== RAG a remonté pour '{}' ===\n{}", question.question(), debugContent);
+		*/
+		
+		log.info("conversationId = '{}'", conversationId);
 		
 		return chatClient.prompt()
 				.system(systemSpec -> systemSpec
@@ -58,13 +61,15 @@ public class SpringAiReviewService implements AIReviewService {
 		
 	}
 	
+	/*
+	
 	private void logUsage(Usage usage) {
 		log.info("Token usage: prompt={}, generation={}, total={}",
 		usage.getPromptTokens(),
 		usage.getCompletionTokens(),
 		usage.getTotalTokens());
 		}
-	
+	*/
 
 	/*
 	@Override

@@ -27,6 +27,8 @@ import reactor.core.scheduler.Schedulers;
 
 @SpringBootApplication
 public class VectorStoreLoaderApplication {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(VectorStoreLoaderApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(VectorStoreLoaderApplication.class, args);
@@ -46,7 +48,7 @@ public class VectorStoreLoaderApplication {
 				.subscribeOn(Schedulers.boundedElastic());
 	}
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(VectorStoreLoaderApplication.class);
+	
 	@Value("classpath:/templates/nameOfTheBook.st")
 	Resource nameOfTheBookTemplateResource;
 
